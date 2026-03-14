@@ -11,7 +11,7 @@
 
 ## What It Does
 
-The ODGS Databricks Bridge connects to your Databricks workspace and transforms Unity Catalog table/column metadata into ODGS-compliant JSON schemas that the [Universal Interceptor](https://github.com/MetricProvenance/odgs-protocol) can enforce at runtime.
+The ODGS Databricks Bridge connects to your Databricks workspace and transforms Unity Catalog table/column metadata into ODGS-compliant JSON schemas that the [Universal Interceptor (ODGS Core Engine)](https://github.com/MetricProvenance/odgs-protocol) can enforce at runtime.
 
 ```
 Unity Catalog REST API            ODGS
