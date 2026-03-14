@@ -82,6 +82,20 @@ class UnityCatalogClient:
         response.raise_for_status()
         return response.json()
 
+    def _patch(self, endpoint: str, json_data: Dict) -> Dict:
+        """Execute a PATCH request against the Unity Catalog API."""
+        url = f"{self.workspace_url}/api/{self.API_VERSION}/unity-catalog/{endpoint}"
+        logger.debug(f"PATCH {url} data={json_data}")
+
+        response = self._session.patch(url, json=json_data, timeout=self.timeout)
+        response.raise_for_status()
+        return response.json()
+
+    def update_table_comment(self, full_name: str, comment: str) -> Dict:
+        """Update the comment/description of a Unity Catalog table."""
+        payload = {"comment": comment}
+        return self._patch(f"tables/{full_name}", json_data=payload)
+
     def list_catalogs(self) -> List[Dict]:
         """List all catalogs in the metastore."""
         result = self._get("catalogs")

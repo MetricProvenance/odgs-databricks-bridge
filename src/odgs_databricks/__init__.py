@@ -16,7 +16,7 @@ Usage:
     bridge.sync(catalog="production", output_dir="./schemas/custom/")
 """
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 
 from odgs_databricks.bridge import DatabricksBridge
 from odgs_databricks.client import UnityCatalogClient

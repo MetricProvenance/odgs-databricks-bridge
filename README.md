@@ -107,6 +107,19 @@ odgs-databricks sync \
 }
 ```
 
+## 🆕 v4.1.0: Bi-Directional Write-Backs
+
+The ODGS Databricks bridge now supports **Bi-Directional Sync (Plane 4)**. It can parse your secure `sovereign_audit.log` offline and push compliance results back directly into your Unity Catalog table comments. 
+
+This creates a seamless feedback loop for Data Stewards without compromising the Air-Gapped nature of the core ODGS protocol.
+
+```bash
+odgs-databricks write-back \
+    --log-path ./sovereign_audit.log \
+    --url https://adb-1234567890.azuredatabricks.net \
+    --token dapi...
+```
+
 ## Authentication
 
 | Method | CLI Flag | Environment Variable |
