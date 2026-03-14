@@ -1,7 +1,7 @@
 # ODGS Databricks Bridge
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![ODGS](https://img.shields.io/badge/ODGS-v4.0.1-0055AA)](https://github.com/MetricProvenance/odgs-protocol)
+[![ODGS](https://img.shields.io/badge/ODGS-v5.0.0-0055AA)](https://github.com/MetricProvenance/odgs-protocol)
 
 **Transform your Databricks Unity Catalog into active ODGS runtime enforcement schemas.**
 
@@ -107,6 +107,21 @@ odgs-databricks sync \
 }
 ```
 
+---
+🏢 Enterprise & Public Sector: EU AI Act Compliance
+This open-source bridge connects your physical data infrastructure to the ODGS validation engine. However, if you are operating a High-Risk AI System and require strict liability indemnification under the EU AI Act (Articles 10 & 12), you need cryptographic provenance.
+
+Metric Provenance offers the commercial Enterprise Infrastructure for ODGS:
+
+Certified Sovereign Packs: Pre-compiled, cryptographically signed Ed25519 rule bundles for DORA, EU AI Act, and Basel Committee compliance.
+
+The S-Cert Sovereign Registry: An air-gapped, on-premise Enterprise Certificate Authority that natively ingests ODGS telemetry to mint immutable, JWS-sealed audit logs of every AI decision.
+
+Institutional Ontologies: Native support for TNO FLINT and European Data Space schemas.
+
+👉 Discover the Sovereign CA Enterprise Node | View the Telemetry
+
+---
 ## 🆕 v4.1.0: Bi-Directional Write-Backs
 
 The ODGS Databricks bridge now supports **Bi-Directional Sync (Plane 4)**. It can parse your secure `sovereign_audit.log` offline and push compliance results back directly into your Unity Catalog table comments. 
