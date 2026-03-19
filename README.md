@@ -1,7 +1,7 @@
 # ODGS Databricks Bridge
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![ODGS](https://img.shields.io/badge/ODGS-v5.0.0-0055AA)](https://github.com/MetricProvenance/odgs-protocol)
+[![ODGS](https://img.shields.io/badge/ODGS-v5.1.0-0055AA)](https://github.com/MetricProvenance/odgs-protocol)
 
 **Transform your Databricks Unity Catalog into active ODGS runtime enforcement schemas.**
 

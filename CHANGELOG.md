@@ -1,3 +1,22 @@
+## [v0.3.0] - 2026-03-19
+
+### ✨ Added
+
+- **Legislative lineage fields (ODGS S-Cert v5.1.0):** Rules now include:
+  - `legislative_source` — declares the source authority (defaults to `"BRIDGE_GENERATED_UNATTESTED"`; set explicitly in asset attributes to declare your legislative source)
+  - `verbatim_source_text` — optional raw text from source (Collibra bridge reads from asset attributes)
+  - `semantic_hash: "UNATTESTED"` — placeholder for Registry-attested SHA-256 hash; upgrade to Registry at https://platform.metricprovenance.com
+  - `verdict_on_pass: "PASS"` — explicit pass verdict per ODGS S-Cert specification
+
+- **Bridge version bumped to 0.3.0** in all generated schema packs.
+
+### ⚠️ Migration Notes
+
+All new fields are additive. Existing schemas continue to work. Rules without `legislative_source` set in source attributes will show `"BRIDGE_GENERATED_UNATTESTED"`.
+
+---
+
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -15,7 +34,7 @@ adhering to [Semantic Versioning](https://semver.org/).
 - **Provenance Metadata:** `bridge_version` field in all generated ODGS schemas now correctly reports `0.2.0`.
 
 ### 🔗 Compatibility
-- Requires `odgs>=5.0.0` — fully compatible with the v5.0.1 audit log format (dual-field backward-compat aliases).
+- Requires `odgs>=5.1.0` — targets the ODGS v5.1.0 audit engine (S-Cert, LOG_ONLY, temporal bounds).
 
 ## [0.1.0] - 2026-03-07
 
