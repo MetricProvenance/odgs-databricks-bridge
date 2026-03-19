@@ -86,7 +86,7 @@ class TestMetricTransformation:
 
         assert prov["bridge"] == "odgs-databricks-bridge"
         assert prov["source_url"] == "databricks://production.finance.revenue"
-        assert prov["synced_at"].endswith("Z")
+        assert "+00:00" in prov["synced_at"]  # timezone-aware ISO 8601 (v5.0.1)
 
 
 class TestRuleGeneration:
@@ -146,7 +146,7 @@ class TestSchemaPackOutput:
             [sample_table, minimal_table], output_type="metrics"
         )
 
-        assert schema["$schema"] == "https://metricprovenance.com/schemas/odgs/v4"
+        assert schema["$schema"] == "https://metricprovenance.com/schemas/odgs/v5"
         assert schema["metadata"]["source"] == "databricks"
         assert schema["metadata"]["tables_processed"] == 2
         assert schema["metadata"]["items_generated"] == 2
