@@ -59,7 +59,7 @@ class DatabricksBridge:
             schema_filter: Optional schema name to limit scope
             output_dir: Directory to write ODGS JSON files
             output_type: "metrics" or "rules"
-            severity: Rule severity level (HARD_STOP, WARNING, INFO)
+            severity: Rule severity level (HARD_STOP, SOFT_STOP, WARNING, INFO)
 
         Returns:
             Absolute path to the generated schema file.

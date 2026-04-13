@@ -58,7 +58,7 @@ def sync(
         "metrics", "--type", help="Output type: 'metrics' or 'rules'",
     ),
     severity: str = typer.Option(
-        "WARNING", "--severity", help="Rule severity (HARD_STOP, WARNING, INFO)",
+        "WARNING", "--severity", help="Rule severity (HARD_STOP, SOFT_STOP, WARNING, INFO)",
     ),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Enable debug logging"),
 ):

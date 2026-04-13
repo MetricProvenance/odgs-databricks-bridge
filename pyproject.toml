@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "odgs-databricks-bridge"
-version = "0.3.0"
+version = "0.4.0"
 description = "Bridge: Databricks Unity Catalog → ODGS Runtime Enforcement Schemas"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -36,6 +36,10 @@ dev = ["pytest>=7.0", "pytest-mock>=3.10", "responses>=0.23"]
 Homepage = "https://metricprovenance.com"
 Repository = "https://github.com/MetricProvenance/odgs-databricks-bridge"
 Documentation = "https://github.com/MetricProvenance/odgs-databricks-bridge#readme"
+Changelog = "https://github.com/MetricProvenance/odgs-databricks-bridge/blob/main/CHANGELOG.md"
+Issues = "https://github.com/MetricProvenance/odgs-databricks-bridge/issues"
+"Partner Demo" = "https://platform.metricprovenance.com"
+"ODGS Core" = "https://pypi.org/project/odgs/"
 
 [project.scripts]
 odgs-databricks = "odgs_databricks.cli:app"

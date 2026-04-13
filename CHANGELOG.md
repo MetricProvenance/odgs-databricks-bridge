@@ -1,3 +1,18 @@
+## [v0.4.0] - 2026-04-13
+
+### ✨ Added — ODGS v6.0 Compatibility
+
+- **`SOFT_STOP` severity support:** CLI `--severity` flag and Python API now accept `SOFT_STOP`, the override-gated severity introduced in ODGS v6.0.0. Existing `HARD_STOP`, `WARNING`, and `INFO` remain unchanged.
+- **Badge updated** to `v5.1+ | v6.0 Compatible` — signals forward compatibility with the ODGS Sovereign Validation Engine.
+- **Architecture diagram** updated to include `SOFT_STOP` in the Universal Interceptor severity list.
+
+### 🔗 Compatibility
+
+- Requires `odgs>=5.1.0` — works with both v5.x and v6.0 engines.
+- All changes are **additive, backward-compatible, and non-breaking**.
+
+---
+
 ## [v0.3.0] - 2026-03-19
 
 ### ✨ Added
