@@ -145,7 +145,7 @@ odgs-databricks write-back \
 
 ## Bi-Directional Write-Backs
 
-The bridge supports **Bi-Directional Sync**: it parses your `sovereign_audit.log` offline and pushes compliance results back into Unity Catalog table comments — creating a seamless feedback loop for Data Stewards without compromising the air-gapped nature of the core ODGS protocol.
+The bridge supports **Bi-Directional Sync**: it parses your `sovereign_audit.log` offline and pushes compliance results back into Unity Catalog table comments — creating a deterministic feedback loop for Data Stewards without compromising the air-gapped nature of the core ODGS protocol.
 
 ---
 
@@ -169,7 +169,7 @@ This bridge is designed for organisations governed by:
 | **Basel Committee BCBS 239** | Risk data aggregation — accuracy and integrity of data sourced from Unity Catalog |
 | **NEN 381 525** | Dutch federated data sovereignty standard |
 
-> For cryptographic legal indemnity (Ed25519 JWS audit seals, certified Sovereign Packs for DORA/EU AI Act), see the **[Metric Provenance Enterprise Platform](https://platform.metricprovenance.com)**.
+> For cryptographic legal indemnity (Ed25519 JWS audit seals, certified Sovereign Packs for DORA/EU AI Act), see the **[Metric Provenance Enterprise Platform](https://registry.metricprovenance.com)**.
 
 ---
 

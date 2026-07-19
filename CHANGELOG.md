@@ -1,3 +1,12 @@
+## [v0.4.1] - 2026-07-18
+
+### 🔧 Fixed — Version unification
+
+- **Unified version metadata:** `pyproject.toml`, `__version__`, and the `bridge_version` stamped into emitted ODGS schemas now all report `0.4.1`. Previously these disagreed (package 0.4.0, `__version__` 1.0.0, emitted `bridge_version` stale), which made provenance metadata in generated schemas unreliable.
+- **Packaging:** the vendored Databricks best-practices PDF is now excluded from the published sdist (`[tool.hatch.build.targets.sdist] exclude`). The file remains in the repository.
+
+No functional changes to transformation logic.
+
 ## [v0.4.0] - 2026-04-13
 
 ### ✨ Added — ODGS v6.0 Compatibility
@@ -20,7 +29,7 @@
 - **Legislative lineage fields (ODGS S-Cert v5.1.0):** Rules now include:
   - `legislative_source` — declares the source authority (defaults to `"BRIDGE_GENERATED_UNATTESTED"`; set explicitly in asset attributes to declare your legislative source)
   - `verbatim_source_text` — optional raw text from source (Collibra bridge reads from asset attributes)
-  - `semantic_hash: "UNATTESTED"` — placeholder for Registry-attested SHA-256 hash; upgrade to Registry at https://platform.metricprovenance.com
+  - `semantic_hash: "UNATTESTED"` — placeholder for Registry-attested SHA-256 hash; upgrade to Registry at https://registry.metricprovenance.com
   - `verdict_on_pass: "PASS"` — explicit pass verdict per ODGS S-Cert specification
 
 - **Bridge version bumped to 0.3.0** in all generated schema packs.

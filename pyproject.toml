@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "odgs-databricks-bridge"
-version = "0.4.0"
+version = "0.4.1"
 description = "Bridge: Databricks Unity Catalog → ODGS Runtime Enforcement Schemas"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -38,7 +38,7 @@ Repository = "https://github.com/MetricProvenance/odgs-databricks-bridge"
 Documentation = "https://github.com/MetricProvenance/odgs-databricks-bridge#readme"
 Changelog = "https://github.com/MetricProvenance/odgs-databricks-bridge/blob/main/CHANGELOG.md"
 Issues = "https://github.com/MetricProvenance/odgs-databricks-bridge/issues"
-"Partner Demo" = "https://platform.metricprovenance.com"
+"Sovereign Registry" = "https://registry.metricprovenance.com"
 "ODGS Core" = "https://pypi.org/project/odgs/"
 
 [project.scripts]
@@ -49,3 +49,9 @@ packages = ["src/odgs_databricks"]
 
 [tool.hatch.build.targets.wheel.sources]
 "src" = ""
+
+[tool.hatch.build.targets.sdist]
+# Keep the vendor best-practices PDF in the repo but out of the published sdist.
+exclude = [
+    "*.pdf",
+]
