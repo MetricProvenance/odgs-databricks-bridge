@@ -170,6 +170,8 @@ This bridge is designed for organisations governed by:
 
 > For cryptographic legal indemnity (Ed25519 JWS audit seals, certified Sovereign Packs for DORA/EU AI Act), see the **[Metric Provenance Enterprise Platform](https://registry.metricprovenance.com)**.
 
+> **Get started:** [metricprovenance.com/start](https://www.metricprovenance.com/start) (guided walkthrough) · **Certified packs:** [metricprovenance.com/pricing](https://www.metricprovenance.com/pricing)
+
 ---
 
 ## Requirements
