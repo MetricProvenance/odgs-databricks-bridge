@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "odgs-databricks-bridge"
-version = "0.4.1"
+version = "0.4.2"
 description = "Bridge: Databricks Unity Catalog → ODGS Runtime Enforcement Schemas"
 readme = "README.md"
 requires-python = ">=3.9"

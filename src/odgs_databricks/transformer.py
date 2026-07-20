@@ -122,7 +122,7 @@ class DatabricksTransformer:
             },
             "provenance": {
                 "bridge": "odgs-databricks-bridge",
-                "bridge_version": "0.4.1",
+                "bridge_version": "0.4.2",
                 "synced_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
                 "source_url": f"databricks://{table.full_name}",
             },
@@ -171,7 +171,7 @@ class DatabricksTransformer:
                     "verdict_on_pass": "PASS",
                     "provenance": {
                         "bridge": "odgs-databricks-bridge",
-                        "bridge_version": "0.4.1",
+                        "bridge_version": "0.4.2",
                         "synced_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
                         "source_url": f"databricks://{table.full_name}/{col.name}",
                     },
@@ -200,7 +200,7 @@ class DatabricksTransformer:
                     "verdict_on_pass": "PASS",
                     "provenance": {
                         "bridge": "odgs-databricks-bridge",
-                        "bridge_version": "0.4.1",
+                        "bridge_version": "0.4.2",
                         "synced_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
                         "source_url": f"databricks://{table.full_name}/{col.name}",
                     },
@@ -243,7 +243,7 @@ class DatabricksTransformer:
                 "source": "databricks",
                 "organization": self.organization,
                 "bridge": "odgs-databricks-bridge",
-                "bridge_version": "0.4.1",
+                "bridge_version": "0.4.2",
                 "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
                 "tables_processed": len(tables),
                 "items_generated": len(items),

@@ -1,3 +1,10 @@
+## [v0.4.2] - 2026-07-20
+
+### Docs
+
+- Removed a committee/standards-body reference from the README that named specific external bodies — the standard and the software are two different things and this repo's docs should describe the latter, not standardization-process status.
+- Removed a Databricks partner document that had been sitting in the repository (already excluded from the PyPI package build).
+
 ## [v0.4.1] - 2026-07-18
 
 ### 🔧 Fixed — Version unification

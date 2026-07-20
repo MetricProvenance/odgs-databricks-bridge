@@ -11,7 +11,7 @@
 
 The ODGS Databricks Bridge is an **institutional connector** that translates Databricks Unity Catalog table and column metadata into cryptographically addressable ODGS enforcement schemas. It converts passive catalog definitions — column constraints, non-nullable fields, type assertions — into mechanically executable governance rules enforced at pipeline runtime.
 
-Architecturally aligned with **CEN/CENELEC JTC 25** and **NEN 381 525** federated data sovereignty principles.
+Architecturally aligned with federated data sovereignty principles, and on a path toward standardization.
 
 ---
 
@@ -167,7 +167,6 @@ This bridge is designed for organisations governed by:
 | **DORA (Regulation EU 2022/2554)** | ICT resilience — data lineage and operational incident traceability across Databricks workloads |
 | **EU AI Act (2024/1689) Articles 10 & 12** | Training data governance and audit trail requirements for High-Risk AI Systems built on Databricks |
 | **Basel Committee BCBS 239** | Risk data aggregation — accuracy and integrity of data sourced from Unity Catalog |
-| **NEN 381 525** | Dutch federated data sovereignty standard |
 
 > For cryptographic legal indemnity (Ed25519 JWS audit seals, certified Sovereign Packs for DORA/EU AI Act), see the **[Metric Provenance Enterprise Platform](https://registry.metricprovenance.com)**.
 
