@@ -51,7 +51,12 @@ packages = ["src/odgs_databricks"]
 "src" = ""
 
 [tool.hatch.build.targets.sdist]
-# Keep the vendor best-practices PDF in the repo but out of the published sdist.
+# Keep the vendor best-practices PDF and the marketplace-demo video/poster in the repo
+# (GitHub README + marketplace listing links need them) but out of the published sdist —
+# they're pure bloat for anyone running `pip install`, no runtime value.
 exclude = [
     "*.pdf",
+    "examples/marketplace-demo/*.mp4",
+    "examples/marketplace-demo/*.jpg",
+    "examples/marketplace-demo/*.png",
 ]

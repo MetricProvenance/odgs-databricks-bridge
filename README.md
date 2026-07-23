@@ -13,6 +13,12 @@ The ODGS Databricks Bridge is an **institutional connector** that translates Dat
 
 Architecturally aligned with federated data sovereignty principles, and on a path toward standardization.
 
+### See it in action
+
+[![Watch the Databricks bridge sync a real schema and enforce a signed rule pack](examples/marketplace-demo/clip_databricks_poster.jpg)](examples/marketplace-demo/clip_databricks.mp4)
+
+Real bridge, real engine, real ES256-signed rule pack, real Ed25519 audit seal — click to watch on GitHub. Only the Unity Catalog REST API is mocked; see [examples/marketplace-demo/](examples/marketplace-demo/) for the full honest-accounting demo rig.
+
 ---
 
 ## Architecture
