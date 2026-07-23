@@ -1,3 +1,27 @@
+## [v0.4.3] - 2026-07-23
+
+### 🐛 Fixed
+
+- **`write-back` destroyed any existing human-authored table comment.** It always did a full-replace PATCH instead of fetch-then-append. Added `client.get_table()` + `client.append_odgs_comment()`, which fetch the current comment, strip any previously-appended ODGS block (so repeated write-back runs don't grow the comment unboundedly), and append the new block after preserved human content. The mock demo server's `GET /tables/<full_name>` route and in-memory comment persistence were added to match.
+- **No pagination handling** in `list_catalogs`/`list_schemas`/`list_tables` — a workspace with more results than fit on one Unity Catalog API page had results silently truncated with no warning. Added `_get_paginated()`, which follows `next_page_token` until exhausted.
+- **`TYPE_CHECK` rules ignored the `--severity` flag**, always hardcoding `INFO`. Kept as always-`INFO` (now documented, not silent) rather than honoring an arbitrary severity: the generated `logic_expression` uses `type()`, which the ODGS engine's sandboxed evaluator doesn't allow, so these rules can't actually enforce anything today — inheriting a user-requested `HARD_STOP` would have falsely implied enforcement that isn't real.
+- **`output_type`/`severity` were never validated** — a CLI typo silently produced a valid-looking but empty schema, with no error. Both now raise `ValueError` on an unrecognized value.
+- **Audit-log parse errors in `write-back` were only logged at `DEBUG`** (invisible by default) and unparseable line counts weren't surfaced. Now logged at `INFO` with a summary count printed at the end of the run. Also fixed a related gap: a syntactically-valid-but-non-object JSON line (e.g. `null` or a list) would raise an uncaught `AttributeError` past the parse step — now validated explicitly.
+- **`typer` was imported and used by the CLI but never declared as a dependency** — every clean `pip install odgs-databricks-bridge` followed by `odgs-databricks --help` failed unless `typer` happened to already be present from something else. Added `typer>=0.9.0` to `[project.dependencies]`.
+- **Hardcoded `"0.4.2"` `bridge_version` literal** in four places in `transformer.py` instead of importing `odgs_databricks.__version__` — the same drift class of bug already fixed once in the Collibra bridge this release cycle.
+
+### 📦 Packaging
+
+- Removed `odgs>=5.1.0` and `pydantic>=2.0.0` from `[project.dependencies]` — neither is imported anywhere in this package; every install was pulling in the full `odgs` package for no runtime use.
+- Removed the unused `sdk` extra (`databricks-sdk>=0.20.0`) — never referenced anywhere in the code; the actual client is a hand-rolled `requests` wrapper. `CHANGELOG.md`'s v0.1.0 entry describing "Optional `databricks-sdk` integration" described a capability that never existed in the shipped code.
+- Fixed a stale sdist-exclude comment referencing a vendor PDF that was already deleted from the repo in v0.4.2.
+
+### 📄 Docs
+
+- README's "What Gets Generated" table showed a SQL-style NOT NULL example (`revenue.amount IS NOT NULL`) and a wrong type mapping (`type(amount) == 'decimal'`, should be `'numeric'`) that didn't match the actual generated `logic_expression`. Corrected to the literal generated strings, with an explicit note on the `TYPE_CHECK` severity scoping above.
+
+Verified: full test suite passes (20 passed, up from 15 baseline — 5 new tests for pagination and fetch-then-append), plus a live fresh-install run of the full demo rig (mock server → sync → sign → enforce, both APPROVED and BLOCKED paths) and a direct GET/PATCH/GET round-trip confirming the mock server correctly persists appended comments.
+
 ## [v0.4.2] - 2026-07-20
 
 ### Docs

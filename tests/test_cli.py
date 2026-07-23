@@ -36,6 +36,9 @@ def test_write_back_cli():
             
             assert result.exit_code == 0
             assert "Bi-Directional Sync Complete" in result.stdout
-            assert mock_instance.update_table_comment.call_count == 1
+            # write-back now appends (fetch-then-append) instead of replacing
+            # the comment wholesale, to avoid destroying existing human-authored
+            # table descriptions.
+            assert mock_instance.append_odgs_comment.call_count == 1
     finally:
         os.remove(log_path)

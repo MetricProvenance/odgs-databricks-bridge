@@ -82,6 +82,24 @@ class UnityCatalogClient:
         response.raise_for_status()
         return response.json()
 
+    def _get_paginated(self, endpoint: str, params: Optional[Dict] = None, items_key: str = "") -> List[Dict]:
+        """GET all pages of a Unity Catalog list endpoint, following next_page_token.
+
+        Without this, any workspace with more catalogs/schemas/tables than fit on
+        a single API page would have results silently truncated with no warning.
+        """
+        all_items: List[Dict] = []
+        page_params = dict(params or {})
+        while True:
+            result = self._get(endpoint, params=page_params)
+            all_items.extend(result.get(items_key, []))
+            next_token = result.get("next_page_token")
+            if not next_token:
+                break
+            page_params = dict(params or {})
+            page_params["page_token"] = next_token
+        return all_items
+
     def _patch(self, endpoint: str, json_data: Dict) -> Dict:
         """Execute a PATCH request against the Unity Catalog API."""
         url = f"{self.workspace_url}/api/{self.API_VERSION}/unity-catalog/{endpoint}"
@@ -92,19 +110,47 @@ class UnityCatalogClient:
         return response.json()
 
     def update_table_comment(self, full_name: str, comment: str) -> Dict:
-        """Update the comment/description of a Unity Catalog table."""
+        """Replace the comment/description of a Unity Catalog table wholesale.
+
+        Use append_odgs_comment() instead if you need to preserve any existing
+        human-authored comment — this method overwrites it entirely.
+        """
         payload = {"comment": comment}
         return self._patch(f"tables/{full_name}", json_data=payload)
 
+    ODGS_COMMENT_MARKER = "<!-- odgs-enforcement-block -->"
+
+    def get_table(self, full_name: str) -> Dict:
+        """Fetch a single table's current metadata (including its comment)."""
+        return self._get(f"tables/{full_name}")
+
+    def append_odgs_comment(self, full_name: str, odgs_block: str) -> Dict:
+        """Append an ODGS enforcement block to a table's comment without
+        destroying any pre-existing human-authored content.
+
+        Fetches the current comment, strips any previously-appended ODGS block
+        (identified by ODGS_COMMENT_MARKER, so repeated write-back runs don't
+        grow the comment unboundedly), then writes back preserved-human-text +
+        marker + the new ODGS block.
+        """
+        current = self.get_table(full_name).get("comment") or ""
+        marker_pos = current.find(self.ODGS_COMMENT_MARKER)
+        preserved = (current[:marker_pos] if marker_pos != -1 else current).rstrip()
+
+        if preserved:
+            new_comment = f"{preserved}\n\n{self.ODGS_COMMENT_MARKER}\n{odgs_block}"
+        else:
+            new_comment = f"{self.ODGS_COMMENT_MARKER}\n{odgs_block}"
+
+        return self.update_table_comment(full_name, new_comment)
+
     def list_catalogs(self) -> List[Dict]:
         """List all catalogs in the metastore."""
-        result = self._get("catalogs")
-        return result.get("catalogs", [])
+        return self._get_paginated("catalogs", items_key="catalogs")
 
     def list_schemas(self, catalog_name: str) -> List[Dict]:
         """List all schemas within a catalog."""
-        result = self._get("schemas", params={"catalog_name": catalog_name})
-        return result.get("schemas", [])
+        return self._get_paginated("schemas", params={"catalog_name": catalog_name}, items_key="schemas")
 
     def list_tables(
         self,
@@ -116,14 +162,14 @@ class UnityCatalogClient:
 
         Returns CatalogTable objects with basic metadata.
         """
-        result = self._get(
+        raw_tables = self._get_paginated(
             "tables",
             params={
                 "catalog_name": catalog_name,
                 "schema_name": schema_name,
             },
+            items_key="tables",
         )
-        raw_tables = result.get("tables", [])
 
         tables = []
         for raw in raw_tables:

@@ -17,6 +17,7 @@ import datetime
 import logging
 from typing import Any, Dict, List, Optional
 
+from odgs_databricks import __version__
 from odgs_databricks.client import CatalogTable, CatalogColumn
 
 logger = logging.getLogger(__name__)
@@ -122,7 +123,7 @@ class DatabricksTransformer:
             },
             "provenance": {
                 "bridge": "odgs-databricks-bridge",
-                "bridge_version": "0.4.2",
+                "bridge_version": __version__,
                 "synced_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
                 "source_url": f"databricks://{table.full_name}",
             },
@@ -171,7 +172,7 @@ class DatabricksTransformer:
                     "verdict_on_pass": "PASS",
                     "provenance": {
                         "bridge": "odgs-databricks-bridge",
-                        "bridge_version": "0.4.2",
+                        "bridge_version": __version__,
                         "synced_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
                         "source_url": f"databricks://{table.full_name}/{col.name}",
                     },
@@ -187,6 +188,12 @@ class DatabricksTransformer:
                     "name": f"{table.table_name}.{col.name} TYPE({col.data_type})",
                     "description": f"Column {col.name} must be {TYPE_CONSTRAINTS[type_upper]['type']}",
                     "domain": f"{table.catalog_name}.{table.schema_name}",
+                    # Always INFO regardless of the --severity flag: this rule's
+                    # logic_expression uses type(), which the ODGS engine's sandboxed
+                    # evaluator doesn't allow (not in its safe-builtins list), so it
+                    # can never actually block a pipeline today — inheriting a
+                    # user-requested HARD_STOP here would falsely imply enforcement
+                    # that isn't real. See README "What Gets Generated" for detail.
                     "severity": "INFO",
                     "logic_expression": f"type({col.name}) == '{TYPE_CONSTRAINTS[type_upper]['type']}'",
                     "constraint_type": "TYPE_CHECK",
@@ -200,7 +207,7 @@ class DatabricksTransformer:
                     "verdict_on_pass": "PASS",
                     "provenance": {
                         "bridge": "odgs-databricks-bridge",
-                        "bridge_version": "0.4.2",
+                        "bridge_version": __version__,
                         "synced_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
                         "source_url": f"databricks://{table.full_name}/{col.name}",
                     },
@@ -229,6 +236,12 @@ class DatabricksTransformer:
         Returns:
             ODGS-compliant schema dictionary.
         """
+        if output_type not in ("metrics", "rules"):
+            raise ValueError(f"output_type must be 'metrics' or 'rules', got {output_type!r}")
+        valid_severities = {"HARD_STOP", "SOFT_STOP", "WARNING", "INFO"}
+        if severity not in valid_severities:
+            raise ValueError(f"severity must be one of {sorted(valid_severities)}, got {severity!r}")
+
         logger.warning("[ODGS Bridge] ⚠️ Compiling unsigned rules for ODGS Community Edition. Get Certified Sovereign Packs at https://registry.metricprovenance.com")
         items = []
         for table in tables:
@@ -243,7 +256,7 @@ class DatabricksTransformer:
                 "source": "databricks",
                 "organization": self.organization,
                 "bridge": "odgs-databricks-bridge",
-                "bridge_version": "0.4.2",
+                "bridge_version": __version__,
                 "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
                 "tables_processed": len(tables),
                 "items_generated": len(items),

@@ -9,6 +9,7 @@ Local stand-in implementing exactly the endpoints the real
     GET   /api/2.1/unity-catalog/catalogs
     GET   /api/2.1/unity-catalog/schemas   ?catalog_name=
     GET   /api/2.1/unity-catalog/tables    ?catalog_name=&schema_name=
+    GET   /api/2.1/unity-catalog/tables/<full_name>     (fetch-before-append)
     PATCH /api/2.1/unity-catalog/tables/<full_name>     (ODGS write-back)
 
 Auth: Bearer token, expects "Authorization: Bearer <token>".
@@ -112,9 +113,30 @@ def tables():
     return jsonify({"tables": TABLES.get((catalog_name, schema_name), [])})
 
 
+def _find_table(full_name):
+    for tables_list in TABLES.values():
+        for t in tables_list:
+            if t["full_name"] == full_name:
+                return t
+    return None
+
+
+@app.route("/api/2.1/unity-catalog/tables/<path:full_name>", methods=["GET"])
+def get_table(full_name):
+    table = _find_table(full_name)
+    if table is None:
+        return jsonify({"error_code": "NOT_FOUND", "message": f"No such table: {full_name}"}), 404
+    return jsonify(table)
+
+
 @app.route("/api/2.1/unity-catalog/tables/<path:full_name>", methods=["PATCH"])
 def update_table(full_name):
     payload = request.get_json(force=True, silent=True) or {}
+    table = _find_table(full_name)
+    if table is not None and "comment" in payload:
+        # Persist the new comment in-memory so a subsequent GET reflects it —
+        # real fetch-then-append behavior, not just an echo.
+        table["comment"] = payload["comment"]
     return jsonify({"full_name": full_name, **payload})
 
 

@@ -54,11 +54,13 @@ flowchart LR
 
 ## What Gets Generated
 
-| Unity Catalog Input | ODGS Output Type | Rule Example |
+| Unity Catalog Input | ODGS Output Type | Rule Example (literal generated `logic_expression`) |
 |---|---|---|
 | Table metadata | `metrics` | Metric definitions with full column schemas |
-| Non-nullable columns | `rules` (HARD_STOP) | `revenue.amount IS NOT NULL` |
-| Column data type | `rules` (WARNING) | `type(amount) == 'decimal'` |
+| Non-nullable columns | `rules`, severity = your `--severity` flag | `amount != None` |
+| Column data type | `rules`, severity always `INFO` | `type(amount) == 'numeric'` |
+
+> **Note on `TYPE_CHECK` rules:** severity is always `INFO` regardless of `--severity` — the generated `logic_expression` uses `type()`, which the ODGS engine's sandboxed evaluator doesn't allow, so these rules can't actually block a pipeline today. Binding them for real enforcement needs a custom evaluator extension.
 
 ---
 

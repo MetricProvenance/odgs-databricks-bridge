@@ -138,22 +138,26 @@ def write_back(
     client = UnityCatalogClient(workspace_url=url, token=token)
 
     processed_count = 0
+    skipped_count = 0
     with open(log_path, "r", encoding="utf-8") as f:
         for line in f:
             if not line.strip():
                 continue
-            
+
             try:
                 json_str = line.split(" - ", 1)[1] if " - " in line else line
                 entry = json.loads(json_str)
+                if not isinstance(entry, dict):
+                    raise ValueError(f"expected a JSON object, got {type(entry).__name__}")
             except Exception as e:
-                logging.debug(f"Skipping unparseable line: {e}")
+                skipped_count += 1
+                logging.info(f"Skipping unparseable audit-log line: {e}")
                 continue
 
             metadata_map = entry.get("applied_metadata", {})
             outcome = entry.get("execution_result", "UNKNOWN")
             payload_hash = entry.get("tri_partite_binding", {}).get("payload_hash", "")
-            
+
             # Find Databricks tables
             dbx_tables = set()
             for rule_id, meta in metadata_map.items():
@@ -163,22 +167,25 @@ def write_back(
             for table_name in dbx_tables:
                 cert_url = f"https://certificate.metricprovenance.com/?hash={payload_hash}"
                 emoji = "🛑" if outcome == "BLOCKED" else "✅"
-                
-                # We overwrite or append the comment. Unity catalog handles markdown in comments.
-                comment_text = (
+
+                # Appended (not full-replace) — preserves any existing human-authored
+                # table comment. See client.append_odgs_comment().
+                odgs_block = (
                     f"**ODGS Enforcement: {outcome}** {emoji}\n\n"
                     f"A data pipeline governance check was executed against this table.\n"
                     f"**Forensic Hash:** `{payload_hash}`\n"
                     f"**Validation & Certificate:** [View S-Cert or Upgrade to Sovereign Pack]({cert_url})"
                 )
-                
+
                 try:
-                    client.update_table_comment(table_name, comment_text)
+                    client.append_odgs_comment(table_name, odgs_block)
                     logging.info(f"Successfully wrote back to Databricks Table {table_name}")
                     processed_count += 1
                 except Exception as e:
                     logging.error(f"Failed to write to Databricks Table {table_name}: {e}")
 
+    if skipped_count:
+        typer.echo(f"⚠️  Skipped {skipped_count} unparseable audit-log line(s).")
     typer.echo(f"\n✅ Bi-Directional Sync Complete. Wrote {processed_count} logs to Databricks.")
 
 @app.command()
