@@ -1,7 +1,7 @@
 # ODGS Databricks Bridge
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![ODGS](https://img.shields.io/badge/ODGS-v5.1+_|_v6.0_Compatible-0055AA)](https://github.com/MetricProvenance/odgs-protocol)
+[![ODGS](https://img.shields.io/badge/ODGS-v6.1_Compatible-0055AA)](https://github.com/MetricProvenance/odgs-protocol)
 [![PyPI](https://img.shields.io/pypi/v/odgs-databricks-bridge)](https://pypi.org/project/odgs-databricks-bridge/)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](https://pypi.org/project/odgs-databricks-bridge/)
 
@@ -36,7 +36,7 @@ flowchart LR
         TR["Transformer\n→ ODGS Schema"]
     end
 
-    subgraph ODGS["ODGS Protocol (odgs>=5.1.0)"]
+    subgraph ODGS["ODGS Protocol (odgs>=6.1.0)"]
         I["Universal Interceptor\nHARD_STOP / SOFT_STOP / WARNING / LOG_ONLY"]
         WB["Write-Back\n→ Unity Catalog Comments"]
     end
@@ -176,7 +176,7 @@ This bridge is designed for organisations governed by:
 | **EU AI Act (2024/1689) Articles 10 & 12** | Training data governance and audit trail requirements for High-Risk AI Systems built on Databricks |
 | **Basel Committee BCBS 239** | Risk data aggregation — accuracy and integrity of data sourced from Unity Catalog |
 
-> For cryptographic legal indemnity (Ed25519 JWS audit seals, certified Sovereign Packs for DORA/EU AI Act), see the **[Metric Provenance Enterprise Platform](https://registry.metricprovenance.com)**.
+> For cryptographic attestation (Ed25519 JWS audit seals and signed `.odgs-bundle` Regulation Packs for EU AI Act, DORA, and CSRD), see the **[Metric Provenance Enterprise Platform](https://www.metricprovenance.com/pricing)**.
 
 > **Get started:** [metricprovenance.com/start](https://www.metricprovenance.com/start) (guided walkthrough) · **Certified packs:** [metricprovenance.com/pricing](https://www.metricprovenance.com/pricing)
 
@@ -185,7 +185,7 @@ This bridge is designed for organisations governed by:
 ## Requirements
 
 - Python ≥ 3.9
-- `odgs` ≥ 5.1.0 (core protocol — v6.0 compatible)
+- `odgs` ≥ 6.1.0 (core protocol)
 - Databricks workspace with Unity Catalog enabled
 
 ---
